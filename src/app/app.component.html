@@ -1,0 +1,33 @@
+<h1>angular4-couchdb-attachments</h1>
+<h2>New document to couchdb</h2>
+<p>
+    <label for="id">Id</label><br />
+    <input type="text" id="id" #id value="2" />
+</p>
+<p>
+    <label for="file">File</label><br />
+    <input type="file" id="file" #file>
+</p>
+<p>
+    <button (click)="onSubmit(id, file)">Submit</button>
+</p>
+<hr>
+<h2>Get couchdb data</h2>
+<button (click)="onGetData()">Get Data</button>
+<ul>
+    <li *ngFor="let doc of docs">
+        id : {{doc._id}}<br /> rev : {{doc._rev}}<br /> Name : {{doc.name}}<br /> Attachments:
+        <br />
+        <ul *ngIf="doc.attachments">
+            <li *ngFor="let attachment of doc.attachments">
+                {{attachment.title}}<br /> {{attachment.type}}
+                <br />
+                <img *ngIf="attachment.type == 'image/jpeg'" [src]="sanitizer.bypassSecurityTrustUrl(attachment.url)" />
+
+                <object type="{{attachment.type}}" *ngIf="attachment.type !== 'image/jpeg'" [data]='sanitizer.bypassSecurityTrustResourceUrl(attachment.url)' width="640" height="360" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+    </object>
+            </li>
+        </ul>
+    </li>
+</ul>
+<hr>
